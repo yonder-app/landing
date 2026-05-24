@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 240" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="sky-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A82E7"/>
+      <stop offset=".52" stop-color="#63B0E8"/>
+      <stop offset="1" stop-color="#96E3FB"/>
+    </linearGradient>
+
+    <filter id="filter-back" x="-45%" y="-95%" width="190%" height="290%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="0" result="noise">
+        <animate attributeName="baseFrequency" values="0.008 0.014;0.018 0.008;0.01 0.019;0.008 0.014" dur="13s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="170" result="cloud">
+        <animate attributeName="scale" values="135;205;155;190;135" dur="11s" repeatCount="indefinite"/>
+      </feDisplacementMap>
+      <feGaussianBlur in="cloud" stdDeviation="9"/>
+    </filter>
+    <filter id="filter-mid" x="-45%" y="-95%" width="190%" height="290%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="0" result="noise">
+        <animate attributeName="baseFrequency" values="0.016 0.009;0.008 0.018;0.019 0.01;0.016 0.009" dur="16s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="150" result="cloud">
+        <animate attributeName="scale" values="115;180;130;165;115" dur="14s" repeatCount="indefinite"/>
+      </feDisplacementMap>
+      <feGaussianBlur in="cloud" stdDeviation="15"/>
+    </filter>
+    <filter id="filter-front" x="-45%" y="-95%" width="190%" height="290%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="0" result="noise">
+        <animate attributeName="baseFrequency" values="0.009 0.018;0.019 0.009;0.012 0.02;0.009 0.018" dur="10s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" result="cloud">
+        <animate attributeName="scale" values="34;74;42;64;34" dur="9s" repeatCount="indefinite"/>
+      </feDisplacementMap>
+      <feGaussianBlur in="cloud" stdDeviation="12"/>
+    </filter>
+
+    <g id="cloud-shape">
+      <ellipse cx="-84" cy="10" rx="142" ry="62"/>
+      <ellipse cx="48" cy="-22" rx="176" ry="88"/>
+      <ellipse cx="198" cy="14" rx="138" ry="66"/>
+    </g>
+    <g id="cloud">
+      <use href="#cloud-shape" fill="#fff" filter="url(#filter-back)" opacity=".99"/>
+      <use href="#cloud-shape" fill="#B9E2FB" filter="url(#filter-mid)" opacity=".38" transform="translate(14 24) scale(.96)"/>
+      <use href="#cloud-shape" fill="#78BCEB" filter="url(#filter-front)" opacity=".18" transform="translate(28 42) scale(.88)"/>
+    </g>
+  </defs>
+
+  <rect width="1200" height="240" fill="url(#sky-gradient)"/>
+
+  <g transform="translate(0 90) scale(.68)">
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1040 0" to="2440 0" dur="46s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1040 0" to="2440 0" dur="46s" begin="-23s" repeatCount="indefinite"/>
+    </g>
+  </g>
+  <g transform="translate(0 160) scale(.48)">
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1420 0" to="3260 0" dur="58s" begin="-8s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1420 0" to="3260 0" dur="58s" begin="-37s" repeatCount="indefinite"/>
+    </g>
+  </g>
+  <g transform="translate(0 64) scale(.4)">
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1700 0" to="3980 0" dur="64s" begin="-5s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <use href="#cloud"/>
+      <animateTransform attributeName="transform" type="translate" from="-1700 0" to="3980 0" dur="64s" begin="-37s" repeatCount="indefinite"/>
+    </g>
+  </g>
+</svg>
