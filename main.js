@@ -327,12 +327,10 @@
   }
 
   // Click anywhere on hero image toggles theme (except the pill itself)
-  let _isDark = false;
   if (heroImage) {
     heroImage.addEventListener('click', (e) => {
       if (e.target.closest('.theme-pill')) return;
-      _isDark = !_isDark;
-      setHeroTheme(_isDark ? 'dark' : 'light');
+      setHeroTheme(heroImage.classList.contains('is-dark') ? 'light' : 'dark');
     });
   }
 
@@ -512,7 +510,10 @@
     });
   }
   if (navMenuBtn) navMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); openMobileMenu(); });
-  if (navMobileCloseBtn) navMobileCloseBtn.addEventListener('click', closeMobileMenu);
+  // Clicking the panel header (same visual position as nav) closes menu
+  const navMobileHead = document.querySelector('.nav-mobile-head');
+  if (navMobileHead) navMobileHead.addEventListener('click', closeMobileMenu);
+  if (navMobileCloseBtn) navMobileCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeMobileMenu(); });
   if (navMobileBackdropEl) navMobileBackdropEl.addEventListener('click', closeMobileMenu);
   if (navMobileFeaturesLink) navMobileFeaturesLink.addEventListener('click', closeMobileMenu);
   if (navMobileCoffeeLink) navMobileCoffeeLink.addEventListener('click', closeMobileMenu);

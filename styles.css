@@ -28,6 +28,7 @@
 
   --radius: 14px;
   --radius-lg: 22px;
+  --hero-radius: 36px;
 
   --shadow-sm: 0 1px 2px rgba(20,22,27,0.04);
   --shadow-md: 0 8px 24px -10px rgba(20,22,27,0.12), 0 2px 6px rgba(20,22,27,0.04);
@@ -129,8 +130,10 @@ img.brand-mark-img {
 }
 img.brand-mark-img::after { display: none; }
 .brand { user-select: none; cursor: default; }
-.brand:hover img.brand-mark-img {
-  transform: rotate(-8deg);
+@media (hover: hover) {
+  .brand:hover img.brand-mark-img {
+    transform: rotate(-8deg);
+  }
 }
 .nav-links {
   display: flex;
@@ -487,6 +490,10 @@ img.brand-mark-img::after { display: none; }
   font-weight: 600;
   letter-spacing: 0.03em;
   margin: 0 auto;
+  /* Expand painted bounds so Safari's animation compositing layer includes
+     the drop-shadow overflow from .laurel-people below the element */
+  padding-bottom: 16px;
+  margin-bottom: -16px;
 }
 .laurel-people {
   height: 22px;
@@ -520,8 +527,7 @@ img.brand-mark-img::after { display: none; }
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
-  border-radius: 36px;
-  overflow: hidden;
+  border-radius: var(--hero-radius);
   will-change: transform;
   transform: rotateX(16deg) scale(0.91);
   transform-origin: center bottom;
@@ -530,6 +536,14 @@ img.brand-mark-img::after { display: none; }
     0 24px 38px rgba(89, 152, 231, 0.14),
     0 60px 90px rgba(89, 152, 231, 0.14);
   transition: box-shadow 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hero-image-clip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  /* clip-path clips GPU-composited sub-layers (opacity transitions) — overflow:hidden alone doesn't */
+  clip-path: inset(0 round var(--hero-radius));
 }
 .hero-image.is-dark {
   box-shadow:
@@ -1974,6 +1988,7 @@ h1.hero-title {
   background-clip: text;
   color: transparent;
   display: inline;
+  padding-right: 0.04em;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2020,7 +2035,6 @@ h1.hero-title {
   color: var(--ink-4);
   line-height: 1.5;
   text-align: center;
-  text-wrap: pretty;
 }
 
 /* ── Copy button two-state animation ── */
@@ -2308,9 +2322,10 @@ h1.hero-title {
     perspective: none;
   }
   .hero-image {
+    --hero-radius: 20px; /* syncs clip-path in .hero-image-clip */
     aspect-ratio: unset;
     height: 300px;
-    border-radius: 20px;
+    border-radius: var(--hero-radius);
     transform: none;
   }
 
