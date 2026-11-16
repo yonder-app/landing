@@ -1,6 +1,6 @@
-# Yonder alternative landing: performance and GA4
+# Yonder landing: performance and GA4
 
-The alternative page uses the existing GA4 stream `G-DDWVMYJ078`. No new account or stream was created. Google is loaded asynchronously on `yonder.site` and `www.yonder.site` only. Localhost and other preview hosts do not load Google or send events. Do Not Track and Global Privacy Control also disable the tag. Advertising personalization and Google Signals are disabled in this page's configuration.
+The page uses the existing GA4 stream `G-DDWVMYJ078`. No new account or stream was created. Google is loaded asynchronously on `yonder.site` and `www.yonder.site` only. Localhost and other preview hosts do not load Google or send events. Do Not Track and Global Privacy Control also disable the tag. Advertising personalization and Google Signals are disabled in this page's configuration.
 
 ## Events
 
@@ -27,16 +27,8 @@ Copy success measures installation intent, not completed installation or first l
 
 Official references: https://developers.google.com/analytics/devguides/collection/ga4/events and https://support.google.com/analytics/answer/7201382
 
-## Performance changes
+## Local checks
 
-- Removed the unused Google Fonts request and unused portfolio stylesheet dependency.
-- Combined the required portfolio styles and Yonder overrides into one stylesheet, preserving computed desktop/mobile layout.
-- Video source is attached near the viewport; reduced-motion/Save-Data users load it on explicit playback.
-- Video pauses outside the viewport and in hidden tabs. Returning resumes only if the user has not manually paused.
-- Contrast sampling runs at most four times per second during visible playback; the former callback on every decoded frame is removed.
-- CSS keeps reserved media dimensions and reduced-motion support; the video resolution, frame rate and encoding are unchanged.
-- Compression, CDN cache headers and HTTP Range support must be checked on the production host after deployment; the Python development server is not the production serving configuration.
+Run `node tests/landing.test.cjs` from the project root. This verifies analytics privacy and host gating, event deduplication, video visibility and watch time, clipboard behavior, reduced motion and Save-Data.
 
-## Validation
-
-Run `node tests/landing.test.cjs`. It checks analytics host/privacy gating and deduplication; visibility/user-pause behavior; watch-time versus buffering; clipboard success/failure; reduced-motion and Save-Data behavior. Browser QA also compared computed styles before/after on mobile and desktop, checked video pause outside the screen, and exercised copy/tooltip behavior without sending local test traffic to GA4.
+Outstanding production checks are listed in [open-items.md](open-items.md).

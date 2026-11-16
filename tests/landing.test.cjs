@@ -1,8 +1,8 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const analyticsSource = fs.readFileSync('alternative-analytics.js', 'utf8');
-const landingSource = fs.readFileSync('alternative.js', 'utf8');
+const analyticsSource = fs.readFileSync('analytics.js', 'utf8');
+const landingSource = fs.readFileSync('main.js', 'utf8');
 
 function analytics(hostname, privacy = {}) {
   const scripts = [];
@@ -49,7 +49,7 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
     cloneNode() { const clone = new Element(); clone.querySelector = () => new Element(); return clone; }
     remove() {} focus() {} contains() { return false; }
   }
-  const nodes = Object.fromEntries(['yonder-demo', 'video-control', 'brew-pill-hero', 'copy-label', 'copy-status', 'install-fallback', 'install-tip-trigger', 'install-tip'].map(id => [id, new Element()]));
+  const nodes = Object.fromEntries(['yonder-demo', 'video-control', 'install-button', 'copy-label', 'copy-status', 'install-fallback', 'install-tip-trigger', 'install-tip'].map(id => [id, new Element()]));
   const video = nodes['yonder-demo'];
   video.paused = true; video.currentTime = 0; video.duration = 48; video.loop = true; video.readyState = 4; video.videoWidth = video.videoHeight = 1080;
   const source = new Element(); source.dataset.src = 'demo.mp4';
@@ -67,7 +67,7 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
   vm.runInNewContext(landingSource, {
     document, window, navigator: { connection: { saveData }, clipboard: {
       writeText: async command => { assert.match(command, /^curl -fsSL .*install-yonder.sh \| bash$/); if (clipboardFails) throw Error('denied'); }
-    } }, location: { href: 'https://yonder.site/alternative.html' }, URL,
+    } }, location: { href: 'https://yonder.site/' }, URL,
     matchMedia: () => media, performance: { now: () => clock }, innerWidth: 375,
     setTimeout: fn => { const id = ++timerId; timers.set(id, fn); return id; },
     clearTimeout: id => timers.delete(id),
@@ -110,10 +110,10 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
   assert.equal(page.video.paused, false);
   for (let i = 0; i < 45; i++) page.tick();
   assert.equal(page.events.filter(e => e[0] === 'demo_engaged').length, 1);
-  await page.nodes['brew-pill-hero'].emit('click');
+  await page.nodes['install-button'].emit('click');
   assert.equal(page.events.filter(e => e[0] === 'install_copy_success').length, 1);
   const denied = landing({ clipboardFails: true });
-  await denied.nodes['brew-pill-hero'].emit('click');
+  await denied.nodes['install-button'].emit('click');
   assert.equal(denied.events.filter(e => e[0] === 'install_copy_error').length, 1);
   assert.equal(denied.events.filter(e => e[0] === 'install_copy_success').length, 0);
   assert.equal(denied.nodes['install-fallback'].hidden, false);
