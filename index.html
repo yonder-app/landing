@@ -18,7 +18,7 @@
     <meta name="twitter:description" content="World clocks, made beautiful and human. Native Mac menu bar app for staying in sync across time zones." />
     <meta name="twitter:image" content="assets/web-preview.png" />
     <link rel="icon" href="assets/logo.png" type="image/png" />
-    <link rel="stylesheet" href="styles.css?v=13" />
+    <link rel="stylesheet" href="styles.css?v=16" />
     <script>document.documentElement.classList.add("js");</script>
   </head>
   <body>
@@ -46,9 +46,7 @@
       </div>
       <section class="feed-wrap reveal" data-delay="140" aria-label="Yonder in action">
         <div class="thumb yonder-demo">
-          <video id="yonder-demo" muted loop playsinline preload="none" poster="assets/poster.jpg?v=2" width="1080" height="1080" >
-            <source data-src="assets/yonder-demo.mp4?v=4" type="video/mp4" />
-          </video>
+          <video id="yonder-demo" muted loop playsinline preload="none" data-src="assets/yonder-demo.mp4?v=4" poster="assets/poster.jpg?v=2" width="1080" height="1080"></video>
           <button class="video-control" id="video-control" type="button" aria-label="Pause video"><span class="video-control-disc" aria-hidden="true"><svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="m8.5 5 10.5 7-10.5 7Z"/></svg></span></button>
         </div>
       </section>
@@ -97,7 +95,7 @@
       </section>
       <footer class="foot reveal" data-delay="180">
         <div class="foot-row">
-          <span class="foot-note"><span class="foot-heart" aria-hidden="true"></span>Built with care between time zones</span>
+          <span class="foot-note"><img class="foot-heart" src="assets/heart.svg?v=2" width="14" height="14" alt="" />Built with care between time zones</span>
           <nav class="foot-links">
             <a href="https://web.tribute.tg/d/KLr" target="_blank" rel="noopener">Buy me a coffee</a>
             <a href="mailto:yonder.app@proton.me?subject=Yonder%20feedback">Send feedback</a>
@@ -106,6 +104,6 @@
       </footer>
     </main>
     <script defer src="analytics.js?v=1"></script>
-    <script defer src="main.js?v=13"></script>
+    <script defer src="main.js?v=14"></script>
   </body>
 </html>

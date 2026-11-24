@@ -65,7 +65,7 @@ a {
   width: 100%;
   max-width: var(--feed-w);
   margin-inline: auto;
-  padding: clamp(88px, 15vh, 168px) var(--pad) 0;
+  padding: clamp(52px, 9vh, 100px) var(--pad) 0;
 }
 
 .col {
@@ -492,9 +492,6 @@ body {
   width: 14px;
   height: 14px;
   flex: none;
-  background: #b5b5b5;
-  mask: url('assets/heart.svg') center/contain no-repeat;
-  -webkit-mask: url('assets/heart.svg') center/contain no-repeat;
   transform-origin: center;
   animation: heartbeat 2.4s ease-in-out infinite;
 }
@@ -698,7 +695,7 @@ body {
   color: var(--muted);
   font: inherit;
   max-width: none;
-  text-wrap: pretty;
+  text-wrap: wrap;
 }
 
 @media (max-width:600px) {

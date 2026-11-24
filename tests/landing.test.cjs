@@ -52,8 +52,7 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
   const nodes = Object.fromEntries(['yonder-demo', 'video-control', 'install-button', 'copy-label', 'copy-status', 'install-fallback', 'install-tip-trigger', 'install-tip'].map(id => [id, new Element()]));
   const video = nodes['yonder-demo'];
   video.paused = true; video.currentTime = 0; video.duration = 48; video.loop = true; video.readyState = 4; video.videoWidth = video.videoHeight = 1080;
-  const source = new Element(); source.dataset.src = 'demo.mp4';
-  video.querySelectorAll = () => [source]; video.load = () => {};
+  video.src = ''; video.dataset.src = 'demo.mp4';
   video.play = () => { video.paused = false; video.emit('play'); return Promise.resolve(); };
   video.pause = () => { if (!video.paused) { video.paused = true; video.emit('pause'); } };
   nodes['video-control'].querySelector = () => new Element();
@@ -85,7 +84,11 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
 }
 (async () => {
   const page = landing();
+  assert.equal(page.video.muted, true);
+  assert.equal(page.video.src, '');
   page.visible(1);
+  assert.equal(page.video.src, 'demo.mp4');
+  assert.equal(page.video.autoplay, true);
   assert.equal(page.video.paused, false);
   assert.equal(page.intervals.size, 1);
   for (let i = 0; i < 40; i++) page.tick(false);
@@ -100,6 +103,7 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
   assert.equal(page.events.filter(e => e[0] === 'demo_toggle').length, 0, 'automatic visibility pauses are not manual engagement');
   await page.nodes['video-control'].emit('click');
   assert.equal(page.video.paused, true);
+  assert.equal(page.video.autoplay, false);
   page.visible(0); page.visible(1);
   assert.equal(page.video.paused, true, 'user pause must survive visibility changes');
   await page.nodes['video-control'].emit('click');
@@ -120,6 +124,7 @@ function landing({ reduced = false, saveData = false, clipboardFails = false } =
   for (const options of [{ reduced: true }, { saveData: true }]) {
     const page = landing(options); page.visible(1);
     assert.equal(page.video.paused, true);
+    assert.equal(page.video.autoplay, false);
     assert.equal(page.intervals.size, 0);
     await page.nodes['video-control'].emit('click');
     assert.equal(page.video.paused, false, 'manual playback remains available');

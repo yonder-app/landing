@@ -4,24 +4,19 @@
   const videoControl = document.getElementById('video-control');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const saveData = navigator.connection?.saveData === true;
+  video.muted = true;
   let wantsPlayback = !reducedMotion.matches && !saveData;
   let videoVisible = false;
   let engagementVisible = false;
-  let loaded = false;
   let workTimer;
   let lastTick = 0;
   let lastMediaTime = 0;
   let engagedMs = 0;
   let demoEngaged = false;
   function loadVideo() {
-    if (loaded) return;
-    loaded = true;
-    video.querySelectorAll('source[data-src]').forEach(source => {
-      source.src = source.dataset.src;
-      source.removeAttribute('data-src');
-    });
+    if (video.src) return;
     video.preload = 'metadata';
-    video.load();
+    video.src = video.dataset.src;
   }
   const syncVideo = () => {
     videoControl.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
@@ -57,7 +52,9 @@
     }, 250);
   }
   function syncPlayback() {
-    if (wantsPlayback && videoVisible && !document.hidden) {
+    const shouldPlay = wantsPlayback && videoVisible && !document.hidden;
+    video.autoplay = shouldPlay;
+    if (shouldPlay) {
       loadVideo();
       if (video.paused) video.play().catch(syncVideo);
     } else {
@@ -136,7 +133,11 @@
     videoVisible = engagementVisible = true;
     syncPlayback();
   }
-  window.addEventListener('pagehide', () => { video.pause(); stopVideoWork(); });
+  window.addEventListener('pagehide', () => {
+    video.autoplay = false;
+    video.pause();
+    stopVideoWork();
+  });
   window.addEventListener('pageshow', syncPlayback);
 
   const copyButton = document.getElementById('install-button');
